@@ -58,81 +58,86 @@ def open_file(file="tasks.txt"):
 
 
 # Loop
-while True:
-    show_options = """
-    1 - Add task
-    2 - Remove task
-    3 - Mark task as done
-    4 - View tasks
-    5 - Open file (default: tasks.txt)
-    6 - Save tasks (default: tasks.txt)
-    0 - Exit
-    """
+def main():
+    while True:
+        show_options = """
+        1 - Add task
+        2 - Remove task
+        3 - Mark task as done
+        4 - View tasks
+        5 - Open file (default: tasks.txt)
+        6 - Save tasks (default: tasks.txt)
+        0 - Exit
+        """
 
-    # Menu
-    print(show_options)
-    ask = input("What you want? \n> ")
+        # Menu
+        print(show_options)
+        ask = int(input("What you want? \n> "))
 
+        match ask:
+        # Add task
+            case 1:
+                task = input("Task to add [Press enter to cancel]\n> ")
+                if not task:
+                    print("Canceled")
+                    continue
 
-    # Add task
-    if ask == "1":
-        task = input("Task to add [Press enter to cancel]\n> ")
-        if not task:
-            print("Canceled")
-            continue
-        add_task(task)
-
-
-    # Remove task
-    elif ask == "2":
-        show_tasks()
-        task = input("Task to remove [Press enter to cancel]\n> ")
-        if not task:
-            print("Canceled")
-            continue
-
-        remove_task(task)
+                add_task(task)
 
 
-    # Done task
-    elif ask == "3":
-        show_tasks()
-        task = input("Task to mark as done [Press enter to cancel]\n> ")
-        if not task:
-            print("Canceled")
-            continue
+            # Remove task
+            case 2:
+                show_tasks()
+                task = input("Task to remove [Press enter to cancel]\n> ")
+                if not task:
+                    print("Canceled")
+                    continue
 
-        done_task(task)
+                remove_task(task)
 
 
-    # View tasks
-    elif ask == "4":
-        show_tasks()
+            # Done task
+            case 3:
+                show_tasks()
+                task = input("Task to mark as done [Press enter to cancel]\n> ")
+                if not task:
+                    print("Canceled")
+                    continue
 
-    
-    # Open File
-    elif ask == "5":
-        open_file()
-        print("File opened!")
+                done_task(task)
 
-    # Save 
-    elif ask == "6":
-        if not tasks:
-            print("No tasks to save.")
-            continue
-        for i,t in tasks.items():
-            print(i, t)
-        
-        sure = input("Make sure your decision [y/n]")
-        if sure.lower() == "y":
-            save_tasks()
-            print("+Saved!")
 
-    # Exit
-    elif ask == "0":
-        print("Leaving...")
-        break
-    
-    else:
-        print("Invalid option!")
+            # View tasks
+            case 4:
+                show_tasks()
+
+                
+            # Open File
+            case 5:
+                open_file()
+                print("File opened!")
+
+            # Save 
+            case 6:
+                if not tasks:
+                    print("No tasks to save.")
+                    continue
+                for i,t in tasks.items():
+                    print(i, t)
+                
+                sure = input("Make sure your decision [y/n]")
+                if sure.lower() == "y":
+                    save_tasks()
+                    print("+Saved!")
+
+            # Exit
+            case 0:
+                print("Leaving...")
+                break
+            
+            case _:
+                print("Invalid option!")    
+
+if __name__ == "__main__":
+    main()
      
