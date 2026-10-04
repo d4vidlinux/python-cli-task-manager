@@ -154,7 +154,7 @@ File not found...
 
 ```text
 .
-├── task_manager.py
+├── ...
 └── tasks.txt
 ```
 
@@ -185,10 +185,8 @@ Some ideas for future versions:
 - Add due dates
 - Add task IDs
 - Improve file format using JSON
-- Add command-line arguments with `argparse`
 - Add colored terminal output
 - Add a search function
-- Separate the CLI logic from the task management logic
 
 ## License
 
