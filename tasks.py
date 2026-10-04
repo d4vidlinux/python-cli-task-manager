@@ -2,60 +2,9 @@
 
 # Python CLI Task Manager
 
+from task_functions import add_task, done_task, open_file, remove_task, show_tasks, save_tasks, tasks
+
 print("="*6," Tasks in CLI ","="*6)
-
-tasks = {}
-
-def add_task(task, done="❌"):
-    if task in tasks:
-        print("The task '{}' already exists!".format(task))
-        return
-
-    tasks[task] = done
-    print("Task '{}' added!".format(task))
-
-def done_task(task):
-    if task not in tasks:
-        print("Please, enter a existing task")
-        return
-    
-    tasks[task] = "✅"
-    print("Task '{}' done".format(task))
-
-
-def remove_task(task):
-    if task not in tasks:
-        print("Please, enter a existing task")
-        return
-    
-    tasks.pop(task)
-    print("Task '{}' removed".format(task))
-
-
-def show_tasks():
-    if not tasks:
-        print("No tasks yet.")
-        return
-    for task, status in tasks.items():
-        print(task, status)
-
-
-def save_tasks(file="tasks.txt"):
-    with open(file, "w") as f:
-        for i, t in tasks.items():
-            f.write("{} {}\n".format(i, t))
-
-
-def open_file(file="tasks.txt"):
-    tasks.clear()
-    try:
-        with open(file, "r") as f:
-            for line in f:
-                i, t = line.strip().split(" ", 1)
-                tasks[i] = t
-    except FileNotFoundError:
-        print("File not found...")
-
 
 # Loop
 def main():
@@ -122,8 +71,7 @@ def main():
                 if not tasks:
                     print("No tasks to save.")
                     continue
-                for i,t in tasks.items():
-                    print(i, t)
+                show_tasks
                 
                 sure = input("Make sure your decision [y/n]")
                 if sure.lower() == "y":
