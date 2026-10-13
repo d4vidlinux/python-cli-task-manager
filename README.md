@@ -234,4 +234,4 @@ Potential features for future versions:
 This project is intended for learning and experimentation with Python.
 
 ## Author 
-d4vidlinxu
+d4vidlinux
