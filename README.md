@@ -1,100 +1,152 @@
 # Python CLI Task Manager
 
-A simple **Task Manager** made in Python that runs directly in the terminal.
-
-The project allows you to create, remove, complete, view, save, and load tasks using a simple CLI menu.
+A simple **Task Manager** built with Python that runs directly in the terminal. It allows users to organize tasks, manage categories, track completion status, mark priorities, and store tasks in a JSON file.
 
 ## Features
 
-- Add tasks
+- Add tasks with or without categories
 - Remove tasks
 - Mark tasks as completed
-- View all tasks
-- Save tasks to a file
-- Load tasks from a file
-- Cancel operations by pressing `Enter`
-- Simple interactive CLI
-- Task status using emojis:
+- View tasks organized by category
+- Mark tasks as priority using 🥇
+- Save tasks to a JSON file
+- Load tasks from a JSON file
+- Prevent duplicate tasks within the same category
+- Validate task and category existence before modifying them
+- Automatically remove empty categories after deleting their last task
+- Cancel operations by pressing `Enter` where supported
+- Interactive terminal menu
+- Task status indicators:
   - ❌ Not completed
   - ✅ Completed
+  - 🥇 Priority task
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.10 or newer
 
-The project uses `match/case`, so Python 3.10 or newer is required.
+The project uses `match/case`, which requires Python 3.10 or newer.
+
+No external dependencies are required.
+
+## Project Structure
+
+```text
+.
+├── tasks.py
+├── task_functions.py
+└── tasks.json
+```
+
+- `tasks.py`: Handles the interactive CLI menu and user input.
+- `task_functions.py`: Contains the functions for creating, removing, completing, displaying, and prioritizing tasks, as well as loading and saving data.
+- `tasks.json`: Stores tasks persistently. The file is created when tasks are saved.
 
 ## Usage
 
-Run the program:
+Run the application:
 
 ```bash
-python3 task_manager.py
+python3 tasks.py
 ```
 
-You will see a menu similar to:
+The menu provides the following options:
 
 ```text
-====== Tasks in CLI ======
-
 1 - Add task
 2 - Remove task
 3 - Mark task as done
 4 - View tasks
-5 - Open file (default: tasks.txt)
-6 - Save tasks (default: tasks.txt)
+5 - Open file (default: tasks.json)
+6 - Save tasks (default: tasks.json)
+7 - Mark task as priority [!]
 0 - Exit
 ```
 
-### Adding a task
+## Adding Tasks
 
-Select option `1` and enter the task:
+Select option `1` and enter a task name. You can optionally assign it to a category.
+
+Example:
 
 ```text
+Enter the category
+> Programming
+
 Task to add
 > Study Python
 ```
 
-The task will be added with the default status:
+The task is stored under the `Programming` category with the default status `❌`.
+
+You can also create tasks without a category by pressing `Enter` at the category prompt.
+
+## Task Categories
+
+Tasks can be organized into categories to make them easier to manage.
+
+Example:
 
 ```text
-Study Python ❌
+Programming:
+  Study Python - ❌
+  Practice C - ✅
+
+Linux:
+  Learn systemd - ❌
 ```
 
-### Marking a task as done
+Tasks without categories are stored separately from categorized tasks.
 
-Select option `3` and enter the exact task name:
+## Marking Tasks as Completed
+
+Select option `3`, enter the category if applicable, and provide the exact task name.
+
+The task status changes from `❌` to `✅`.
+
+Example:
 
 ```text
-Task to mark as done
-> Study Python
+Study Python - ❌
 ```
 
-The status will change to:
+After completion:
 
 ```text
-Study Python ✅
+Study Python - ✅
 ```
 
-### Removing a task
+## Removing Tasks
 
-Select option `2` and enter the task you want to remove.
+Select option `2`, enter the category if applicable, and specify the task to remove.
 
-### Viewing tasks
+The program checks whether the specified task exists before removing it. If a category becomes empty after its last task is removed, the category is also deleted.
 
-Option `4` displays all currently loaded tasks:
+## Task Priorities
+
+Select option `7` to mark a task as a priority.
+
+Priority tasks receive the `🥇` indicator.
+
+Example:
 
 ```text
-Study Python ❌
-Learn Linux ✅
-Practice C ❌
+Study Python - ❌ 🥇
 ```
+
+The program avoids adding the priority indicator repeatedly to the same task.
+
+## Viewing Tasks
+
+Select option `4` to display the tasks currently stored in memory.
+
+Categorized tasks are displayed under their respective categories, while uncategorized tasks are displayed separately.
+
+If there are no tasks, the program displays a message indicating that the task list is empty.
 
 ## Case Sensitivity
 
-**Tasks are case-sensitive.**
-
-This means that uppercase and lowercase letters are treated as different characters.
+**Task names and category names are case-sensitive.**
 
 For example:
 
@@ -104,90 +156,82 @@ study python
 STUDY PYTHON
 ```
 
-These are considered **three different tasks**.
+These names are treated as different strings.
 
-Because of this, when removing or completing a task, you must enter its name using the same capitalization used when it was created.
+When completing, removing, or prioritizing a task, enter its name and category using the same capitalization used when creating them.
 
 ## Saving Tasks
 
-Option `6` saves the current tasks to:
+Select option `6` to save the current tasks to:
 
 ```text
-tasks.txt
+tasks.json
 ```
 
-Before saving, the program asks for confirmation:
+The program asks for confirmation before saving. Confirm with `y` or `yes`.
 
-```text
-Make sure your decision [y/n]
-```
-
-Enter `y` to save.
-
-The file stores the task name and its status.
+The data is stored in JSON format, preserving task names, categories, and statuses.
 
 Example:
 
-```text
-Study Python ❌
-Learn Linux ✅
-Practice C ❌
+```json
+{
+    "Programming": {
+        "Study Python": "❌ 🥇",
+        "Practice C": "✅"
+    },
+    "Learn Linux": "❌"
+}
 ```
+
+The JSON format makes the stored data easier to process with other Python programs and tools.
 
 ## Loading Tasks
 
-Option `5` loads tasks from:
+Select option `5` to load tasks from `tasks.json`.
 
-```text
-tasks.txt
-```
+Loading a file replaces the tasks currently stored in memory with the data loaded from the file.
 
-Loading the file replaces the tasks currently stored in memory.
-
-If the file does not exist, the program displays:
-
-```text
-File not found...
-```
-
-## Project Structure
-
-```text
-.
-├── ...
-└── tasks.txt
-```
-
-`tasks.txt` is created when tasks are saved.
+The program handles missing files and invalid JSON by displaying an error message instead of terminating because of those errors.
 
 ## Concepts Used
 
-This project was built using several Python concepts:
+This project applies several Python concepts:
 
-- Functions
-- Dictionaries
-- Loops
+- Functions and modular code organization
+- Dictionaries and nested dictionaries
+- Loops and conditional statements
 - `match/case`
-- `*args` / function parameters
-- File handling
-- Exception handling
-- String formatting
-- User input
-- Dictionary methods such as `.items()`, `.pop()` and `.clear()`
+- Function parameters and default arguments
+- File handling with `open()`
+- JSON serialization and deserialization
+- Exception handling with `try/except`
+- String formatting with f-strings
+- User input and interactive CLI design
+- Dictionary methods such as `.items()` and `.pop()`
+- Data validation
+- Basic state management
+- Separation of CLI logic from task management functions
 
 ## Possible Improvements
 
-Some ideas for future versions:
+Potential features for future versions:
 
-- Add task priorities
-- Add task categories
 - Add task descriptions
-- Add due dates
-- Add task IDs
-- Improve file format using JSON
-- Add colored terminal output
-- Add a search function
+- Add due dates and reminders
+- Introduce unique task IDs
+- Allow users to edit existing tasks
+- Add task search and filtering
+- Support custom file paths
+- Add command-line arguments using `argparse`
+- Improve terminal output with colors
+- Validate the structure of loaded JSON data more thoroughly
+- Separate task data management from persistence logic
+- Add configuration files and logging
 
 ## License
 
-This project is for learning and experimentation with Python.
+This project is intended for learning and experimentation with Python.
+
+## Author 
+d4vidlinxu
